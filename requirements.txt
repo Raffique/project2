@@ -1,0 +1,15 @@
+flask
+click
+Flask-WTF
+gunicorn
+itsdangerous
+Jinja2
+MarkupSafe
+PyJWT
+python-dotenv
+Werkzeug
+WTForms
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+psycopg2-binary
