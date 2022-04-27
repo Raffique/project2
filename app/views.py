@@ -7,6 +7,7 @@ This file creates your application.
 
 from crypt import methods
 import json
+import os
 from app import app, db, login_manager
 from flask import render_template, request, jsonify, send_file, redirect, flash, session, abort, send_from_directory, url_for
 from flask_login import login_user, logout_user, current_user, login_required
@@ -34,7 +35,7 @@ def get_uploaded_images():
 
 @app.route('/')
 def index():
-    return jsonify(message="This is the beginning of our API")
+    return send_file(os.path.join('../dist/', 'index.html'))
 
 @app.route('/api/csrf-token', methods=['GET'])
 def get_csrf():
