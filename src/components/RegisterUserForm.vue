@@ -1,18 +1,18 @@
 <script>
 import router from "@/router/index.js";
 export default {
-    created(){
-        this.getCsrfToken();
-    },
+    
     data(){
         return {
             csrf_token: ''
         }
     },
-    created: function () {
+    created(){
+        this.getCsrfToken();
+
         document.body.style.backgroundImage = "url(/src/assets/register.jpg)";
         document.body.style.backgroundRepeat = "no-repeat";
-     },
+    },
     methods : {
         user(){
 

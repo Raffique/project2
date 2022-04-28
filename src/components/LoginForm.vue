@@ -32,7 +32,7 @@ export default {
             })
             .then(function (data) {
                 // display a success message
-                console.log("json 200")
+                console.log(data)
                 if (data.status == 200){
                     localStorage.setItem("login", true);
                     alert('Succesful login');
