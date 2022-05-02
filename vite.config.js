@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       '^/api*': {
-        target: 'https://tester-for-raff.herokuapp.com:8080/'
+        target: 'http://localhost:8080/'
       }
     }
   }
