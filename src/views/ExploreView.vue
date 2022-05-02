@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import router from "@/router/index.js";
     export default {
     data() {
         return {
@@ -47,7 +48,9 @@
         
     },
     methods: {
-        
+        view(car_id){
+            router.push({name: 'car', params: {car_id: car_id}})
+        },
         cars() {
             let self = this;
             fetch('/api/cars', {

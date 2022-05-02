@@ -135,7 +135,10 @@ def cars():
 def getcar(car_id):
     file = Cars.query.filter_by(id=car_id).first()
     liked = Favourites.query.filter_by(car_id=car_id, user_id=current_user.get_id()).first()
-    return jsonify({'car': file.serialize(), 'liked': liked.serialize()})
+    if type(liked) != type(None): 
+        return jsonify({'car': file.serialize(), 'liked': liked.serialize()})
+    else:
+        return jsonify({'car': file.serialize(), 'liked': None})
 
 @app.route("/api/cars/<car_id>/favourite", methods=["POST"])
 def favcar(car_id):

@@ -17,7 +17,6 @@ export default {
   },
   methods : {
     reinitialize(){
-      console.log('it does run');
       this.logged = localStorage.logged == 'true' ? true : false;
     },
     login(){
