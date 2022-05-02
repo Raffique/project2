@@ -76,7 +76,7 @@ import router from "@/router/index.js";
             return response.json();
         })
         .then(function(data) {
-            self.articles = data.cars;
+            self.articles = data.cars.slice(-3);
         });
     },
     checklogged(){

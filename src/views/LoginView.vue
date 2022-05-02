@@ -1,13 +1,14 @@
 <script>
 import router from "@/router/index.js";
 export default {
-    created(){
-        this.getCsrfToken();
-    },
+    
     data(){
         return {
             csrf_token: ''
         }
+    },
+    created(){
+        this.getCsrfToken();
     },
     methods : {
         register(){
@@ -33,6 +34,9 @@ export default {
                     localStorage.setItem('logged', 'true');
                     router.push('/');
                     
+                }
+                else if (data.status == 401){
+                    alert('invalid username or password');
                 }
                 
                 

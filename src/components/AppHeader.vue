@@ -8,7 +8,6 @@ export default {
     };
   },
   mounted(){
-    //this.check_logged_in();
   },
   created(){
         
@@ -58,15 +57,15 @@ export default {
           <ul class="navbar-nav me-auto">
 
             <li v-if="logged" class="nav-item" style="">
-              <RouterLink class="nav-link" to="/about">Add Car</RouterLink>
+              <RouterLink class="nav-link" to="/cars/new">Add Car</RouterLink>
             </li>
 
             <li v-if="logged" class="nav-item">
-              <RouterLink class="nav-link" to="/about">Explore</RouterLink>
+              <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
             </li>
 
             <li v-if="logged" class="nav-item">
-              <RouterLink class="nav-link" to="/about">My Profile</RouterLink>
+              <RouterLink class="nav-link" to="/user">My Profile</RouterLink>
             </li>
             
           </ul>
