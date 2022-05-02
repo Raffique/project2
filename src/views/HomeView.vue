@@ -1,13 +1,21 @@
 
 <template>
-    <div>
-        <h5 id="logout"><a href="/" class="nav-link">Logout</a></h5>
-        <div class="btn-container">
-            <div class="route-btn"><a href="/cars/new" class="nav-link" >Add Car</a></div>
-            <div class="route-btn"><a href="/explore" class="nav-link">Explore</a></div>
-            <div class="route-btn"><a href="/user" class="nav-link">Profile</a></div>
-        </div>
-    </div>
+
+    <form @submit.prevent="search" id="searchForm" method="POST">
+            <div class="row mb-2">
+                <div class="col-auto">
+                    <div class="form-group">       
+                        <label for="make">Make</label>
+                        <input name="make" placeholder="Enter Make" class="form-control explore-field">
+                        <label for="make">Model</label>
+                        <input name="model" placeholder="Enter Model" class="form-control explore-field">
+                        <br>
+                        <button type="button" class="btn btn-success" >Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    
 
     <div class="container-fuild">
         
@@ -36,6 +44,71 @@
             
     </div>
 </template>
+
+<script>
+import router from "@/router/index.js";
+ export default {
+  data(){
+      return {
+          articles: [],
+          csrf_token: '',
+      };
+  },
+  created: function () {
+      this.getCsrfToken();
+    this.cars();
+   
+  },
+  mounted(){
+      this.checklogged();
+  },
+  methods: {
+    view(car_id){
+        router.push({name: 'car', params: {car_id: car_id}})
+    },
+    cars() {
+        let self = this;
+        fetch('/api/cars', {
+            method: 'GET',
+            headers: {'X-CSRFToken': this.csrf_token}
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            self.articles = data.cars;
+        });
+    },
+    checklogged(){
+        fetch('/api/loggedIn')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            if (data.id == null){
+                localStorage.setItem('logged', 'false');
+                router.push('login');
+            }
+            else{
+                localStorage.setItem('logged', 'true');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    },
+    getCsrfToken() {
+        let self = this;
+        fetch('/api/csrf-token')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            self.csrf_token = data.csrf_token;
+        })
+    }
+  }
+
+ };
+</script>
 
 <style>
     .btn-container{
@@ -129,52 +202,3 @@
 
 </style>
 
-<script>
-import router from "@/router/index.js";
- export default {
-  data(){
-      return {
-          articles: [],
-          csrf_token: '',
-      };
-  },
-  created: function () {
-      this.getCsrfToken();
-    document.body.style.backgroundImage = "url(/src/assets/homepage.jpg)";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundSize = "cover";
-    this.cars();
-   
-  },
-  mounted(){
-  },
-  methods: {
-    view(car_id){
-        router.push({name: 'car', params: {car_id: car_id}})
-    },
-    cars() {
-            let self = this;
-            fetch('/api/cars', {
-                method: 'GET',
-                headers: {'X-CSRFToken': this.csrf_token}
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                self.articles = data.cars;
-            });
-        },
-        getCsrfToken() {
-            let self = this;
-            fetch('/api/csrf-token')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                self.csrf_token = data.csrf_token;
-            })
-        }
-  }
-
- };
-</script>

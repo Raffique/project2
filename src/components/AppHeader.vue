@@ -3,27 +3,23 @@ import { RouterLink } from "vue-router";
 export default {
   data(){
     return {
-      logged : false,
+      //logged : false,
+      logged: localStorage.logged == 'true' ? true : false,
     };
   },
   mounted(){
-    this.check_logged_in();
+    //this.check_logged_in();
   },
   created(){
         
     },
+  watch: {
+    '$route': 'reinitialize',
+  },
   methods : {
-    check_logged_in(){
-
-      if (localStorage.getItem("login") == "true"){
-        this.logged = true;
-        return true
-      }
-      else{
-        this.logged = false;
-        return false
-      }
-
+    reinitialize(){
+      console.log('it does run');
+      this.logged = localStorage.logged == 'true' ? true : false;
     },
     login(){
       this.$router.push("login")
@@ -46,7 +42,7 @@ export default {
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Lab 7</a>
+        <a class="navbar-brand" href="/">United Auto Sales</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -60,22 +56,29 @@ export default {
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <RouterLink to="/" class="nav-link active">Home</RouterLink>
+
+            <li v-if="logged" class="nav-item" style="">
+              <RouterLink class="nav-link" to="/about">Add Car</RouterLink>
             </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link" to="/about">About</RouterLink>
+
+            <li v-if="logged" class="nav-item">
+              <RouterLink class="nav-link" to="/about">Explore</RouterLink>
             </li>
+
+            <li v-if="logged" class="nav-item">
+              <RouterLink class="nav-link" to="/about">My Profile</RouterLink>
+            </li>
+            
           </ul>
-          <div v-if="logged">
-            <div class="nav-link" @click="logout">Logout</div>
-          </div>
-          <div v-else>
-            <div class="nav-link" @click="register">Register</div>
-            <div class="nav-link" @click="login">Login</div>
-          </div>
+            <RouterLink v-if="logged" style="color: white;" to="/logout">Logout</RouterLink>
+            <div v-else>
+              <RouterLink style="color: white; margin:10px;" to="register">Register</RouterLink>
+              <RouterLink style="color: white; margin:10px;" to="login">Login</RouterLink>
+            </div>
+            
         </div>
       </div>
+      
     </nav>
   </header>
 </template>

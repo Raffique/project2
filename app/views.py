@@ -39,7 +39,12 @@ def index():
 
 @app.route('/api/csrf-token', methods=['GET'])
 def get_csrf():
+    print(current_user.get_id())
     return jsonify({'csrf_token': generate_csrf()})
+
+@app.route('/api/loggedIn')
+def loggedIn():
+    return jsonify({'id':current_user.get_id()})
 
 @app.route('/api/uploads/<filename>')
 def get_image(filename):
@@ -82,6 +87,7 @@ def register():
 def cars():
 
     form = CarForm()
+    
 
     if request.method == "POST":
         if form.validate_on_submit():

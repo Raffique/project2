@@ -15,9 +15,9 @@ mounted(){
         })
         .then(function (data) {
           if (data.status == 200){
-            localStorage.setItem("login", false)
+            localStorage.setItem('logged', 'false');
             alert("Logged Out!")
-            router.push('front')
+            router.push('login')
             
           }
         })
