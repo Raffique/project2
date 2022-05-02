@@ -28,12 +28,12 @@
                             display: inline-block;  
                             margin: 10px; 
                             margin-left:450px; 
-                            color:gray; 
                             width: 40px; 
                             height: 40px; 
                             border-radius:20px; 
                             font-size: 20px;" 
-                            @click="like_this_car(article.id)">
+                            @click="like_this_car(article.id)"
+                            :style="{color: like}">
                             &#10084;
                         </button>
                     </div>
@@ -51,15 +51,11 @@ export default {
         return {
             csrf_token: '',
             article: Object,
+            like : 'black',
         };
     },
     mounted(){
-        if (this.article.liked){
-            document.getElementById("heart").style.color = "red";
-        }
-        else{
-            document.getElementById("heart").style.color = "grey";
-        }
+        
     },
     created(){
         this.getCsrfToken();
@@ -97,19 +93,28 @@ export default {
                 return response.json();
             })
             .then(function(data) {
+
                 self.article = data.car;
                 self.article.len = data.car.photo.split('/t').length; 
                 self.article.idx = 0;
                 self.article.img = "/api/uploads/" + data.car.photo.split('/t')[0];
+                self.article.liked = data.liked;
 
-                self.article.liked = data.liked != null;
-                //console.log(self.article.liked)
+                if (self.article.liked){
+                    console.log('red');
+                    self.like = "red";
+                }
+                else{
+                    console.log('gray');
+                    self.like = "black";
+                }
+
             }).catch(function (error) {
                 console.log(error);
             });
         },
         like_this_car(car_id){
-
+            let self = this;
             fetch(`/api/cars/${car_id}/favourite`, {
                 method: "POST",
                 headers: {'X-CSRFToken': this.csrf_token}
@@ -120,7 +125,11 @@ export default {
             .then(function(data) {
                 if (data.status == 200){
                     alert("You liked this car!");
-                    document.getElementById("heart").style.color = "red";
+                    self.like = "red";
+                }
+                else if (data.status == -200){
+                    alert('You unliked this car');
+                    self.like = "black";
                 }
             }).catch(function (error) {
                 console.log(error);

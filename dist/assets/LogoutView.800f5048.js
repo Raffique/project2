@@ -1,1 +1,0 @@
-import{_ as e,r as o}from"./index.4ec954c3.js";const r={data(){return{}},mounted(){fetch("/api/auth/logout",{}).then(function(t){return t.json()}).then(function(t){t.status==200&&(localStorage.setItem("logged","false"),alert("Logged Out!"),o.push("login"))})}};function n(t,a,u,s,c,f){return null}var l=e(r,[["render",n]]);export{l as default};

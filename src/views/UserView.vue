@@ -65,6 +65,71 @@
     </div>
 </template>
 
+<script>
+import router from "@/router/index.js";
+ export default {
+  data(){
+      return {
+          articles: [],
+          csrf_token: '',
+          user: Object,
+      };
+  },
+  created: function () {
+    this.getCsrfToken();
+    this.favs();
+   
+  },
+  mounted(){
+  },
+  methods: {
+    view(car_id){
+        router.push({name: 'car', params: {car_id: car_id}})
+    },
+    favs() {
+            let self = this;
+            fetch('/api/user', {
+                method: 'GET',
+                headers: {'X-CSRFToken': this.csrf_token}
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                self.user = data.user;
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+
+            fetch('/api/user/favourites', {
+                method: 'GET',
+                headers: {'X-CSRFToken': this.csrf_token}
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                self.articles = data.favs;
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+        },
+        getCsrfToken() {
+            let self = this;
+            fetch('/api/csrf-token')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                self.csrf_token = data.csrf_token;
+            })
+        }
+  }
+
+ };
+</script>
+
 <style>
 
     .card {
@@ -236,65 +301,3 @@
 
 </style>
 
-<script>
-import router from "@/router/index.js";
- export default {
-  data(){
-      return {
-          articles: [],
-          csrf_token: '',
-          user: Object,
-      };
-  },
-  created: function () {
-    this.getCsrfToken();
-    this.favs();
-   
-  },
-  mounted(){
-  },
-  methods: {
-    
-    favs() {
-            let self = this;
-            fetch('/api/user', {
-                method: 'GET',
-                headers: {'X-CSRFToken': this.csrf_token}
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                self.user = data.user;
-            })
-            .catch(function (error){
-                console.log(error);
-            });
-
-            fetch('/api/user/favourites', {
-                method: 'GET',
-                headers: {'X-CSRFToken': this.csrf_token}
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                self.articles = data.favs;
-            })
-            .catch(function (error){
-                console.log(error);
-            });
-        },
-        getCsrfToken() {
-            let self = this;
-            fetch('/api/csrf-token')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                self.csrf_token = data.csrf_token;
-            })
-        }
-  }
-
- };
-</script>

@@ -143,19 +143,26 @@ def getcar(car_id):
 @app.route("/api/cars/<car_id>/favourite", methods=["POST"])
 def favcar(car_id):
     if request.method == 'POST':
-        fav = Favourites(car_id=car_id, user_id=int(current_user.get_id()))
-        db.session.add(fav)
-        db.session.commit()
-        return jsonify({'status': 200})
+        qf = db.session.query(Favourites).filter(and_(Favourites.car_id == car_id, Favourites.user_id == current_user.get_id())).first()
+        if type(qf) == type(None):
+            fav = Favourites(car_id=car_id, user_id=int(current_user.get_id()))
+            db.session.add(fav)
+            db.session.commit()
+            return jsonify({'status': 200})
+        else:
+            db.session.delete(qf)
+            db.session.commit()
+            return jsonify({'status': -200})
+
 
 #-----------------------This should be a GET method-------------------------------->>>
 @app.route("/api/search", methods=["GET", 'POST'])
 def search():
 
     if request.method == "POST":
-        make = request.form.get('make')
-        model = request.form.get('model')
-        files = db.session.query(Cars).filter(or_(Cars.make.like(make), Cars.model.like(model)))
+        make = request.form.get('make') + '%'
+        model = request.form.get('model') + '%'
+        files = db.session.query(Cars).filter(or_(Cars.make.like(make), Cars.model.like(model))).all()
         #files = db.session.query(Cars).filter(or_(Cars.make == make, Cars.model == model))
         files = [file.serialize() for file in files]
         print(files)

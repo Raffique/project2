@@ -83,7 +83,6 @@ import router from "@/router/index.js";
         fetch('/api/loggedIn')
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             if (data.id == null){
                 localStorage.setItem('logged', 'false');
                 router.push('login');
