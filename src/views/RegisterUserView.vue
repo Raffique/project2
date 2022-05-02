@@ -62,23 +62,23 @@ export default {
         <div class="grid-container">
             <div class="grid-item">
               <label for="user">Username</label><br>
-              <input type="text" id="form-con" name="username"><br> 
+              <input type="text"  name="username"><br> 
             </div>
             <div  class="grid-item">
               <label for="pass">Password</label><br>
-              <input type="password" id="form-con" name="password"><br>
+              <input type="password"  name="password"><br>
             </div>
             <div class="grid-item">
               <label for="name">Fullname</label><br>
-              <input type="text" id="form-con" name="name" ><br>
+              <input type="text"  name="name" ><br>
             </div>
             <div class="grid-item">
               <label for="email">Email</label><br>
-              <input type="text" id="form-con" name="email" placeholder="johndoe@gmail.com"><br>
+              <input type="text"  name="email" placeholder="johndoe@gmail.com"><br>
             </div>
            <div class="grid-item">
               <label for="location">Location</label><br>
-              <input type="text" id="form-con" name="location"><br>
+              <input type="text"  name="location"><br>
           </div>
         </div>
          <br>
