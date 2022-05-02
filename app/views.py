@@ -160,13 +160,19 @@ def favcar(car_id):
 def search():
 
     if request.method == "POST":
-        make = request.form.get('make') + '%'
-        model = request.form.get('model') + '%'
+        make = request.form.get('make')
+        if make != '':
+            make += '%'
+        model = request.form.get('model')
+        if model != '':
+            model += '%'
         files = db.session.query(Cars).filter(or_(Cars.make.like(make), Cars.model.like(model))).all()
-        #files = db.session.query(Cars).filter(or_(Cars.make == make, Cars.model == model))
-        files = [file.serialize() for file in files]
-        print(files)
-        return jsonify(files)
+        if type(files) != type(None):
+            files = [file.serialize() for file in files]
+            return jsonify({'files': files})
+        else:
+            return jsonify({'files': None})
+
 
 """ @app.route('/api/users/<user_id>', methods=["GET"])
 def getUser(user_id):

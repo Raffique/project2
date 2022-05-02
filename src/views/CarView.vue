@@ -3,9 +3,10 @@
         <div  style="width: 1400px; height: 480px; border: 2px solid grey;">
             <div style="display: flex;" >
                 <div style=" width: 680px; height: 480px; ">
-                    <button @click="change_pic(-1)" >&#8249;</button>
+                    <button class="clickers" style="position:absolute; top:300px; margin-left:15px;" @click="change_pic(-1)" >&#8249;</button>
+                    <button class="clickers" style="position:absolute; top:300px; margin-left:605px;" @click="change_pic(1)" >&#8250;</button>
                     <img style="width: 678px; height: 478px;"  :src="article.img" alt="Image of Property">
-                    <button @click="change_pic(1)" >&#8250;</button>
+                    
                 </div>
                 <div class="" style=" width: 680px; height: 480px; padding: 20px;">
                     <div class="">
@@ -170,6 +171,22 @@ export default {
     font-size: 12px; 
     margin-top: 5px; 
     margin-bottom: 5px
+}
+
+.clickers{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    border-radius: 30px;
+    line-height: 40px;
+    opacity: 0.5;
+}
+
+.clickers:hover{
+    opacity: 0.9;
+}
+.clickers:active{
+    opacity: 1;
 }
 </style>
 

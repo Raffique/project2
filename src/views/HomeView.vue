@@ -1,26 +1,34 @@
 
 <template>
 
-    <form @submit.prevent="search" id="searchForm" method="POST">
+    <div style="text-align:center;">
+        <form @submit.prevent="search" id="searchForm" method="POST" style="display:inline-block;">
             <div class="row mb-2">
-                <div class="col-auto">
-                    <div class="form-group">       
+                <div style="margin: 25px; text-align:center;">
+                    <div class="form-group" style="display:inline-block;">       
                         <label for="make">Make</label>
                         <input name="make" placeholder="Enter Make" class="form-control explore-field">
-                        <label for="make">Model</label>
-                        <input name="model" placeholder="Enter Model" class="form-control explore-field">
-                        <br>
-                        <button type="button" class="btn btn-success" >Search</button>
+                        
+                        
                     </div>
+                    <div class="form-group" style="display:inline-block;">
+                        <label for="model">Model</label>
+                        <input name="model" placeholder="Enter Model" class="form-control explore-field">
+                    </div>
+                    <button class="btn btn-success" style="display:inline-block;" >Search</button>
                 </div>
             </div>
         </form>
+
+        <button class="btn btn-danger" style="display:inline-block; margin:20px; margin-left:40px;"  @click="cars">Clear</button>
+    </div>
+    
     
 
     <div class="container-fuild">
         
             <div v-for="article in articles" :key="article" style="display: inline-block; margin: 10px;" >
-                <div class="card" style="width:300px; height: 480px;">
+                <div class="card" style="width:300px; height: 480px; margin:20px; ">
                     <img  style="width: 300px; height: 200px;" :src="`/api/uploads/${article.photo.split('/t')[0]}`" alt="Card image">
                     
                         <h5 class="card-title">{{ article.title }}</h5>
@@ -78,6 +86,36 @@ import router from "@/router/index.js";
         .then(function(data) {
             self.articles = data.cars.slice(-3);
         });
+    },
+    search(){
+            let self = this;
+            let searchForm = document.getElementById('searchForm');
+            let form_data = new FormData(searchForm);
+
+            fetch("/api/search", {
+                method: 'POST',
+                body: form_data,
+                headers: {'X-CSRFToken': this.csrf_token}
+            })
+            .then(function (response) {
+                
+                return response.json();
+            })
+            .then(function (data) {
+                // display a success message
+                if (data.files != null){
+                    self.articles = data.files;
+                    
+                }
+                else {
+                    alert('No matches found!');
+                }
+                
+                
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
     },
     checklogged(){
         fetch('/api/loggedIn')
