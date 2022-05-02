@@ -18,7 +18,7 @@ from .models import *
 from .forms import *
 from sqlalchemy import or_, and_
 from flask_wtf.csrf import generate_csrf
-from flask_csp.csp import csp_header
+
 
 def get_uploaded_images():
     image_types = ['jpg', 'png', 'jpeg', 'gif', 'svg', 'webp']
@@ -35,18 +35,15 @@ def get_uploaded_images():
 ###
 
 @app.route('/')
-@csp_header({'default-src':"'none'",'script-src':"'self'"})
 def index():
     return send_file(os.path.join('../dist/', 'index.html'))
 
 @app.route('/api/csrf-token', methods=['GET'])
-@csp_header({'default-src':"'none'",'script-src':"'self'"})
 def get_csrf():
     print(current_user.get_id())
     return jsonify({'csrf_token': generate_csrf()})
 
 @app.route('/api/loggedIn')
-@csp_header({'default-src':"'none'",'script-src':"'self'"})
 def loggedIn():
     return jsonify({'id':current_user.get_id()})
 
